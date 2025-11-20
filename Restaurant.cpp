@@ -4,20 +4,20 @@ using namespace std;
 
 // ====== CLASA RESTAURANT ======
 class Restaurant {
-public:
+private:
     // atribute normale
     string nume;
     string adresa;
     int nrLocuri;
 
-    // atribut static
-    static int totalRestaurante;
+    // pointer in HEAP
+    char* tipBucatarie;
 
     // atribut constant
     const int id;
 
-    // pointer in HEAP
-    char* tipBucatarie;
+    // atribut static
+    static int totalRestaurante;
 
 public:
 
@@ -60,6 +60,44 @@ public:
         delete[] tipBucatarie;
     }
 
+    // ===== GETTERI =====
+    string getNume() const { return nume; }
+    string getAdresa() const { return adresa; }
+    int getNrLocuri() const { return nrLocuri; }
+    const char* getTipBucatarie() const { return tipBucatarie; }
+    int getId() const { return id; }
+
+    static int getTotalRestaurante() { return totalRestaurante; }
+
+    // ===== SETTERI =====
+    void setNume(const string& n) {
+        if (!n.empty()) {
+            nume = n;
+        }
+    }
+
+    void setAdresa(const string& a) {
+        if (!a.empty()) {
+            adresa = a;
+        }
+    }
+
+    void setNrLocuri(int nr) {
+        if (nr > 0) {
+            nrLocuri = nr;
+        }
+    }
+
+    void setTipBucatarie(const char* tip) {
+        if (tip != nullptr && strlen(tip) > 0) {
+            if (tipBucatarie != nullptr) {
+                delete[] tipBucatarie;
+            }
+            tipBucatarie = new char[strlen(tip) + 1];
+            strcpy_s(tipBucatarie, strlen(tip) + 1, tip);
+        }
+    }
+
     // metoda de afisare
     void afisare() const {
         cout << "Restaurant ID: " << id << "\n";
@@ -75,11 +113,6 @@ public:
         const Restaurant& r2,
         const Restaurant& r3) {
         return (r1.nrLocuri + r2.nrLocuri + r3.nrLocuri) / 3.0;
-    }
-
-    // functie statica simpla - intoarce totalul de restaurante
-    static int getTotalRestaurante() {
-        return totalRestaurante;
     }
 };
 
