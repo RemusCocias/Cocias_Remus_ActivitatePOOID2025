@@ -121,7 +121,7 @@ int Restaurant::totalRestaurante = 0;
 
 // ====== CLASA ANGAJAT ======
 class Angajat {
-public:
+private:
     string nume;
     string functie;
     double salariu;
@@ -160,32 +160,59 @@ public:
         aniExperienta = new int(ani);
     }
 
+    // Destructor
     ~Angajat() {
         delete aniExperienta;
     }
 
+    // ===== GETTERI =====
+    string getNume() const { return nume; }
+    string getFunctie() const { return functie; }
+    double getSalariu() const { return salariu; }
+    int getAniExperienta() const { return aniExperienta ? *aniExperienta : 0; }
+    int getId() const { return id; }
+    static int getTotalAngajati() { return totalAngajati; }
+
+    // ===== SETTERI =====
+    void setNume(const string& n) {
+        if (!n.empty()) nume = n;
+    }
+
+    void setFunctie(const string& f) {
+        if (!f.empty()) functie = f;
+    }
+
+    void setSalariu(double s) {
+        if (s > 0) salariu = s;
+    }
+
+    void setAniExperienta(int ani) {
+        if (ani >= 0) {
+            if (aniExperienta) delete aniExperienta;
+            aniExperienta = new int(ani);
+        }
+    }
+
+    // ===== AFISARE =====
     void afisare() const {
         cout << "Angajat ID: " << id << "\n";
         cout << "  Nume: " << nume << "\n";
         cout << "  Functie: " << functie << "\n";
         cout << "  Salariu: " << salariu << "\n";
-        cout << "  Ani experienta: " << (aniExperienta ? *aniExperienta : -1) << "\n";
+        cout << "  Ani experienta: " << getAniExperienta() << "\n";
         cout << "-----------------------------\n";
     }
 
-    // functie statica - salariul mediu al 3 angajati
+    // functie statica - salariu mediu al 3 angajati
     static double salariuMediu(const Angajat& a1,
         const Angajat& a2,
         const Angajat& a3) {
         return (a1.salariu + a2.salariu + a3.salariu) / 3.0;
     }
-
-    static int getTotalAngajati() {
-        return totalAngajati;
-    }
 };
 
 int Angajat::totalAngajati = 0;
+
 
 
 // ====== CLASA CLIENT ======
