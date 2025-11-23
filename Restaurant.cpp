@@ -217,7 +217,7 @@ int Angajat::totalAngajati = 0;
 
 // ====== CLASA CLIENT ======
 class Client {
-public:
+private:
     string nume;
     int varsta;
     double buget;
@@ -256,16 +256,48 @@ public:
         reducereFidelitate = new double(reducere);
     }
 
+    // Destructor
     ~Client() {
         delete reducereFidelitate;
     }
 
+    // ===== GETTERI =====
+    string getNume() const { return nume; }
+    int getVarsta() const { return varsta; }
+    double getBuget() const { return buget; }
+    double getReducereFidelitate() const { return reducereFidelitate ? *reducereFidelitate : 0; }
+    int getId() const { return id; }
+
+    static int getTotalClienti() { return totalClienti; }
+
+    // ===== SETTERI =====
+    void setNume(const string& n) {
+        if (!n.empty()) nume = n;
+    }
+
+    void setVarsta(int v) {
+        if (v > 0) varsta = v;
+    }
+
+    void setBuget(double b) {
+        if (b >= 0) buget = b;
+    }
+
+    void setReducereFidelitate(double reducere) {
+        if (reducere >= 0) {
+            if (reducereFidelitate != nullptr)
+                delete reducereFidelitate;
+            reducereFidelitate = new double(reducere);
+        }
+    }
+
+    // ===== AFISARE =====
     void afisare() const {
         cout << "Client ID: " << id << "\n";
         cout << "  Nume: " << nume << "\n";
         cout << "  Varsta: " << varsta << "\n";
         cout << "  Buget: " << buget << "\n";
-        cout << "  Reducere fidelitate: " << (reducereFidelitate ? *reducereFidelitate : 0.0) << "%\n";
+        cout << "  Reducere fidelitate: " << getReducereFidelitate() << "%\n";
         cout << "-----------------------------\n";
     }
 
@@ -275,13 +307,10 @@ public:
         const Client& c3) {
         return c1.buget + c2.buget + c3.buget;
     }
-
-    static int getTotalClienti() {
-        return totalClienti;
-    }
 };
 
 int Client::totalClienti = 0;
+
 
 
 // ====== FUNCTIA MAIN - testam TOTI constructorii ======
