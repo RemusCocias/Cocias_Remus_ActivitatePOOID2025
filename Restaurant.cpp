@@ -55,6 +55,21 @@ public:
         strcpy_s(tipBucatarie, strlen(tip) + 1, tip);
     }
 
+    // Constructor de copiere (deep copy)
+    Restaurant(const Restaurant& other) : id(++totalRestaurante) {
+        nume = other.nume;
+        adresa = other.adresa;
+        nrLocuri = other.nrLocuri;
+
+        if (other.tipBucatarie != nullptr) {
+            tipBucatarie = new char[strlen(other.tipBucatarie) + 1];
+            strcpy_s(tipBucatarie, strlen(other.tipBucatarie) + 1, other.tipBucatarie);
+        }
+        else {
+            tipBucatarie = nullptr;
+        }
+    }
+
     // Destructor
     ~Restaurant() {
         delete[] tipBucatarie;
@@ -313,7 +328,6 @@ int Client::totalClienti = 0;
 
 
 
-// ====== FUNCTIA MAIN - testam TOTI constructorii ======
 int main() {
     // --- Restaurante ---
     Restaurant r1;  // constructor fara parametri
