@@ -175,6 +175,20 @@ public:
         aniExperienta = new int(ani);
     }
 
+    // Constructor de copiere (deep copy)
+    Angajat(const Angajat& other) : id(++totalAngajati) {
+        nume = other.nume;
+        functie = other.functie;
+        salariu = other.salariu;
+
+        if (other.aniExperienta != nullptr) {
+            aniExperienta = new int(*other.aniExperienta);
+        }
+        else {
+            aniExperienta = nullptr;
+        }
+    }
+
     // Destructor
     ~Angajat() {
         delete aniExperienta;
