@@ -285,6 +285,20 @@ public:
         reducereFidelitate = new double(reducere);
     }
 
+    // Constructor de copiere (deep copy)
+    Client(const Client& other) : id(++totalClienti) {
+        nume = other.nume;
+        varsta = other.varsta;
+        buget = other.buget;
+
+        if (other.reducereFidelitate != nullptr) {
+            reducereFidelitate = new double(*other.reducereFidelitate);
+        }
+        else {
+            reducereFidelitate = nullptr;
+        }
+    }
+
     // Destructor
     ~Client() {
         delete reducereFidelitate;
