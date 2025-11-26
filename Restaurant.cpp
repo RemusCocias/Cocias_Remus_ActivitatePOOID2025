@@ -369,8 +369,14 @@ int main() {
 
     cout << "Media locurilor celor 3 restaurante: "
         << Restaurant::mediaLocuri(r1, r2, r3) << "\n";
-    cout << "Total restaurante create: "
+    cout << "Total restaurante create (inainte de copie): "
         << Restaurant::getTotalRestaurante() << "\n\n";
+
+    // testam copy constructor pentru Restaurant
+    Restaurant rCopy = r3; // copy constructor
+    cout << "Restaurant copiat (rCopy din r3):\n";
+    rCopy.afisare();
+    cout << "Nume restaurant copiat (getter): " << rCopy.getNume() << "\n\n";
 
 
     // --- Angajati ---
@@ -385,8 +391,15 @@ int main() {
 
     cout << "Salariu mediu al celor 3 angajati: "
         << Angajat::salariuMediu(a1, a2, a3) << "\n";
-    cout << "Total angajati creati: "
+    cout << "Total angajati creati (inainte de copie): "
         << Angajat::getTotalAngajati() << "\n\n";
+
+    // testam copy constructor pentru Angajat
+    Angajat aCopy = a3;
+    cout << "Angajat copiat (aCopy din a3):\n";
+    aCopy.afisare();
+    cout << "Salariul angajatului copiat (getter): "
+        << aCopy.getSalariu() << "\n\n";
 
 
     // --- Clienti ---
@@ -401,8 +414,18 @@ int main() {
 
     cout << "Bugetul total al celor 3 clienti: "
         << Client::bugetTotal(c1, c2, c3) << "\n";
-    cout << "Total clienti creati: "
+    cout << "Total clienti creati (inainte de copie): "
         << Client::getTotalClienti() << "\n\n";
+
+    // testam copy constructor pentru Client
+    Client cCopy = c3;
+    cout << "Client copiat (cCopy din c3):\n";
+    cCopy.afisare();
+    cout << "Bugetul clientului copiat (getter): "
+        << cCopy.getBuget() << "\n\n";
+
+    cout << "=== Final testare copy constructors ===\n";
 
     return 0;
 }
+
