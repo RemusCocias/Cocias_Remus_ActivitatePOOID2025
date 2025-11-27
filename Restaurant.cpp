@@ -5,18 +5,11 @@ using namespace std;
 // ====== CLASA RESTAURANT ======
 class Restaurant {
 private:
-    // atribute normale
     string nume;
     string adresa;
     int nrLocuri;
-
-    // pointer in HEAP
     char* tipBucatarie;
-
-    // atribut constant
     const int id;
-
-    // atribut static
     static int totalRestaurante;
 
 public:
@@ -129,6 +122,9 @@ public:
         const Restaurant& r3) {
         return (r1.nrLocuri + r2.nrLocuri + r3.nrLocuri) / 3.0;
     }
+
+    // functie globala friend
+    friend void comparaRestaurante(const Restaurant& r1, const Restaurant& r2);
 };
 
 int Restaurant::totalRestaurante = 0;
@@ -238,6 +234,9 @@ public:
         const Angajat& a3) {
         return (a1.salariu + a2.salariu + a3.salariu) / 3.0;
     }
+
+    // functie globala friend
+    friend double diferentaSalarii(const Angajat& a1, const Angajat& a2);
 };
 
 int Angajat::totalAngajati = 0;
@@ -355,6 +354,30 @@ public:
 int Client::totalClienti = 0;
 
 
+// ====== FUNCTIE GLOBALA FRIEND – RESTAURANT ======
+void comparaRestaurante(const Restaurant& r1, const Restaurant& r2) {
+    cout << "\n=== Compara restaurante ===\n";
+    cout << "Restaurant " << r1.getNume() << " are " << r1.getNrLocuri() << " locuri.\n";
+    cout << "Restaurant " << r2.getNume() << " are " << r2.getNrLocuri() << " locuri.\n";
+
+    if (r1.nrLocuri > r2.nrLocuri)
+        cout << "Primul restaurant este mai mare.\n";
+    else if (r1.nrLocuri < r2.nrLocuri)
+        cout << "Al doilea restaurant este mai mare.\n";
+    else
+        cout << "Cele doua restaurante au acelasi numar de locuri.\n";
+}
+
+
+// ====== FUNCTIE GLOBALA FRIEND – ANGAJAT ======
+double diferentaSalarii(const Angajat& a1, const Angajat& a2) {
+    cout << "\n=== Comparare salarii ===\n";
+    cout << "Salariu " << a1.getNume() << ": " << a1.getSalariu() << "\n";
+    cout << "Salariu " << a2.getNume() << ": " << a2.getSalariu() << "\n";
+    return a1.salariu - a2.salariu; // acces direct la atribut privat datorita friend
+}
+
+
 
 int main() {
     // --- Restaurante ---
@@ -403,9 +426,9 @@ int main() {
 
 
     // --- Clienti ---
-    Client c1; // fara parametri
-    Client c2("Cosmin", 25); // 2 parametri
-    Client c3("Ioana", 30, 350.0, 10.0); // mai multi parametri
+    Client c1; 
+    Client c2("Cosmin", 25); 
+    Client c3("Ioana", 30, 350.0, 10.0); 
 
     cout << "=== Clienti ===\n";
     c1.afisare();
@@ -424,8 +447,15 @@ int main() {
     cout << "Bugetul clientului copiat (getter): "
         << cCopy.getBuget() << "\n\n";
 
-    cout << "=== Final testare copy constructors ===\n";
+    // Testam functiile friend 
+    comparaRestaurante(r1, r3);
+
+    double dif = diferentaSalarii(a3, a2);
+    cout << "Diferenta de salarii intre a3 si a2 este: " << dif << "\n";
+
+    cout << "\n=== Final testare copy constructors si functii friend ===\n";
 
     return 0;
 }
+
 
