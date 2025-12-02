@@ -63,6 +63,29 @@ public:
         }
     }
 
+    // Operator de atribuire (deep copy)
+    Restaurant& operator=(const Restaurant& other) {
+        if (this != &other) {
+            // nu putem modifica id (este const)
+            nume = other.nume;
+            adresa = other.adresa;
+            nrLocuri = other.nrLocuri;
+
+            // eliberam memoria existenta
+            if (tipBucatarie != nullptr) {
+                delete[] tipBucatarie;
+                tipBucatarie = nullptr;
+            }
+
+            // copiem din nou tipBucatarie
+            if (other.tipBucatarie != nullptr) {
+                tipBucatarie = new char[strlen(other.tipBucatarie) + 1];
+                strcpy_s(tipBucatarie, strlen(other.tipBucatarie) + 1, other.tipBucatarie);
+            }
+        }
+        return *this;
+    }
+
     // Destructor
     ~Restaurant() {
         delete[] tipBucatarie;
