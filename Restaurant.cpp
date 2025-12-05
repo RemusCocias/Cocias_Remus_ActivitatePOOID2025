@@ -85,6 +85,13 @@ public:
         }
         return *this;
     }
+    // Operator + pentru Restaurant
+    Restaurant operator+(int extra) const {
+        Restaurant copie(*this);
+        copie.nrLocuri += extra;
+        return copie;
+    }
+
 
     // Destructor
     ~Restaurant() {
