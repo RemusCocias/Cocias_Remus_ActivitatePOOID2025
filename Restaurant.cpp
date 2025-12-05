@@ -342,6 +342,27 @@ public:
         }
     }
 
+    // Operator de atribuire (deep copy)
+    Client& operator=(const Client& other) {
+        if (this != &other) {
+            nume = other.nume;
+            varsta = other.varsta;
+            buget = other.buget;
+
+            if (reducereFidelitate != nullptr) {
+                delete reducereFidelitate;
+            }
+
+            if (other.reducereFidelitate != nullptr) {
+                reducereFidelitate = new double(*other.reducereFidelitate);
+            }
+            else {
+                reducereFidelitate = nullptr;
+            }
+        }
+        return *this;
+    }
+
     // Destructor
     ~Client() {
         delete reducereFidelitate;
