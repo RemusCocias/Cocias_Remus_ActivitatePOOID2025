@@ -208,6 +208,27 @@ public:
         }
     }
 
+    // Operator de atribuire (deep copy)
+    Angajat& operator=(const Angajat& other) {
+        if (this != &other) {
+            nume = other.nume;
+            functie = other.functie;
+            salariu = other.salariu;
+
+            if (aniExperienta != nullptr) {
+                delete aniExperienta;
+            }
+
+            if (other.aniExperienta != nullptr) {
+                aniExperienta = new int(*other.aniExperienta);
+            }
+            else {
+                aniExperienta = nullptr;
+            }
+        }
+        return *this;
+    }
+
     // Destructor
     ~Angajat() {
         delete aniExperienta;
