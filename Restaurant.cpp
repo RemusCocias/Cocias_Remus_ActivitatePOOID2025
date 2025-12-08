@@ -251,6 +251,12 @@ public:
         return this->salariu < other.salariu;
     }
 
+    //Operator <= 
+    bool operator<=(const Angajat& other) const {
+        return this->salariu <= other.salariu;
+    }
+
+
     // Destructor
     ~Angajat() {
         delete aniExperienta;
