@@ -98,6 +98,11 @@ public:
             this->nrLocuri == other.nrLocuri;
     }
 
+    //Operator != pentru Restaurant
+    bool operator!=(const Restaurant& other) const {
+        return !(*this == other);
+    }
+
     // Destructor
     ~Restaurant() {
         delete[] tipBucatarie;
