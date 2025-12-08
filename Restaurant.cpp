@@ -380,6 +380,12 @@ public:
         return *this;
     }
 
+    //Operator ++ preincrementare
+    Client& operator++() {
+        this->varsta++;
+        return *this;
+    }
+
     // Destructor
     ~Client() {
         delete reducereFidelitate;
