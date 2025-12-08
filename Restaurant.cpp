@@ -397,6 +397,13 @@ public:
         return *this;
     }
 
+    //Operator -- post decrementare
+    Client operator--(int) {
+        Client copie = *this;
+        this->varsta--;
+        return copie;
+    }
+
     // Destructor
     ~Client() {
         delete reducereFidelitate;
