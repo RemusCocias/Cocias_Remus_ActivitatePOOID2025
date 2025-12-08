@@ -92,6 +92,11 @@ public:
         return copie;
     }
 
+    //Operator ==
+    bool operator==(const Restaurant& other) const {
+        return this->nume == other.nume &&
+            this->nrLocuri == other.nrLocuri;
+    }
 
     // Destructor
     ~Restaurant() {
