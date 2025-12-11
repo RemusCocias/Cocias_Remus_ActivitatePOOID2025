@@ -166,6 +166,9 @@ public:
 
     // functie globala friend
     friend void comparaRestaurante(const Restaurant& r1, const Restaurant& r2);
+
+    friend ostream& operator<<(ostream& out, const Restaurant& r);
+
 };
 
 int Restaurant::totalRestaurante = 0;
@@ -498,6 +501,16 @@ double diferentaSalarii(const Angajat& a1, const Angajat& a2) {
     cout << "Salariu " << a1.getNume() << ": " << a1.getSalariu() << "\n";
     cout << "Salariu " << a2.getNume() << ": " << a2.getSalariu() << "\n";
     return a1.salariu - a2.salariu; // acces direct la atribut privat datorita friend
+}
+
+//functie freind pentru restaurant
+ostream& operator<<(ostream& out, const Restaurant& r) {
+    out << "Restaurant ID: " << r.id << "\n";
+    out << "Nume: " << r.nume << "\n";
+    out << "Adresa: " << r.adresa << "\n";
+    out << "Locuri: " << r.nrLocuri << "\n";
+    out << "Tip bucatarie: " << (r.tipBucatarie ? r.tipBucatarie : "N/A") << "\n";
+    return out;
 }
 
 
