@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include <string>
 using namespace std;
 
 // ====== CLASA RESTAURANT ======
@@ -445,6 +446,15 @@ public:
             reducereFidelitate = new double(reducere);
         }
     }
+
+    char operator[](int index) const {
+        string reducereStr = to_string(this->getReducereFidelitate());
+        if (index >= 0 && index < reducereStr.length()) {
+            return reducereStr[index];
+        }
+        throw std::out_of_range("Index invalid.");
+    }
+
 
     // ===== AFISARE =====
     void afisare() const {
