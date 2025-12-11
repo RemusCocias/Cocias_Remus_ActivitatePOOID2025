@@ -300,6 +300,13 @@ public:
         cout << "-----------------------------\n";
     }
 
+    // crestem salaruiul unui angajat cu o suma fixa
+    Angajat operator+(double suma) const {
+        Angajat copie(*this);
+        copie.salariu += suma;
+        return copie;
+    }
+
     // functie statica - salariu mediu al 3 angajati
     static double salariuMediu(const Angajat& a1,
         const Angajat& a2,
