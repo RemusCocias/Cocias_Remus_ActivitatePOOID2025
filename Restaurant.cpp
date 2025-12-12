@@ -423,6 +423,10 @@ public:
         return copie;
     }
 
+    bool operator>(const Client& other) const {
+        return this->buget > other.buget;
+    }
+
     // Destructor
     ~Client() {
         delete reducereFidelitate;
