@@ -544,7 +544,7 @@ int main() {
         << Restaurant::getTotalRestaurante() << "\n\n";
 
     // testam copy constructor pentru Restaurant
-    Restaurant rCopy = r3; // copy constructor
+    Restaurant rCopy = r3;
     cout << "Restaurant copiat (rCopy din r3):\n";
     rCopy.afisare();
     cout << "Nume restaurant copiat (getter): " << rCopy.getNume() << "\n\n";
@@ -574,9 +574,9 @@ int main() {
 
 
     // --- Clienti ---
-    Client c1; 
-    Client c2("Cosmin", 25); 
-    Client c3("Ioana", 30, 350.0, 10.0); 
+    Client c1;
+    Client c2("Cosmin", 25);
+    Client c3("Ioana", 30, 350.0, 10.0);
 
     cout << "=== Clienti ===\n";
     c1.afisare();
@@ -595,15 +595,79 @@ int main() {
     cout << "Bugetul clientului copiat (getter): "
         << cCopy.getBuget() << "\n\n";
 
-    // Testam functiile friend 
+
+    // --- Functii friend (Faza 2) ---
+    cout << "=== Functii friend ===\n";
     comparaRestaurante(r1, r3);
 
     double dif = diferentaSalarii(a3, a2);
-    cout << "Diferenta de salarii intre a3 si a2 este: " << dif << "\n";
+    cout << "Diferenta de salarii intre a3 si a2 este: " << dif << "\n\n";
 
-    cout << "\n=== Final testare copy constructors si functii friend ===\n";
 
+    // --- Operatorii (Faza 3) ---
+    cout << "=== Testare operatori Faza 3 ===\n";
+
+    // Restaurant: operator+, ==, !=, (), <<
+    Restaurant rTest = r1 + 20;
+    cout << "\nRestaurant dupa operator+ (r1 + 20):\n";
+    rTest.afisare();
+
+    cout << "Restaurant == r1 ? " << (rTest == r1) << "\n";
+    cout << "Restaurant != r1 ? " << (rTest != r1) << "\n";
+    cout << "operator() Restaurant (r1(2)): " << r1(2) << "\n";
+
+    cout << "\nAfisare Restaurant cu operator<< (r3):\n";
+    cout << r3 << "\n";
+
+    // Restaurant: operator= (daca vrei test explicit)
+    Restaurant rAssign;
+    rAssign = r3;
+    cout << "\nRestaurant dupa operator= (rAssign = r3):\n";
+    rAssign.afisare();
+
+
+    // Angajat: operator+, <, <=, !, =
+    Angajat aTest = a3 + 500;
+    cout << "\nAngajat dupa operator+ (a3 + 500):\n";
+    aTest.afisare();
+
+    cout << "a1 < a3 ? " << (a1 < a3) << "\n";
+    cout << "a1 <= a3 ? " << (a1 <= a3) << "\n";
+    cout << "operator! Angajat (salariu invalid?): " << (!a1) << "\n";
+
+    Angajat aAssign;
+    aAssign = a3;
+    cout << "\nAngajat dupa operator= (aAssign = a3):\n";
+    aAssign.afisare();
+
+
+    // Client: ++, --(post), >, [], =
+    ++c1;
+    cout << "\nClient dupa operator++ (++c1):\n";
+    c1.afisare();
+
+    c2--;
+    cout << "Client dupa operator-- (c2--):\n";
+    c2.afisare();
+
+    cout << "c3 > c1 ? " << (c3 > c1) << "\n";
+
+    try {
+        cout << "operator[] Client (c3[1]): " << c3[1] << "\n";
+    }
+    catch (const exception& e) {
+        cout << "Eroare operator[]: " << e.what() << "\n";
+    }
+
+    Client cAssign;
+    cAssign = c3;
+    cout << "\nClient dupa operator= (cAssign = c3):\n";
+    cAssign.afisare();
+
+
+    cout << "\n=== Final testare Faza 2 + Faza 3 ===\n";
     return 0;
 }
+
 
 
