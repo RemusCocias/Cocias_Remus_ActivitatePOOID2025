@@ -265,6 +265,9 @@ public:
         return this->salariu <= other.salariu;
     }
 
+    bool operator!() const {
+        return this->salariu <= 0;
+    }
 
     // Destructor
     ~Angajat() {
