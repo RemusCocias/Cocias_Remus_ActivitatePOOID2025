@@ -104,6 +104,11 @@ public:
         return !(*this == other);
     }
 
+    double operator()(int multiplicator) const {
+        return this->nrLocuri * multiplicator;
+    }
+
+
     // Destructor
     ~Restaurant() {
         delete[] tipBucatarie;
