@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cstring>
 #include <string>
+#include <vector>
+#include <stdexcept>
 using namespace std;
 
 // ====== CLASA RESTAURANT ======
@@ -14,7 +16,6 @@ private:
     static int totalRestaurante;
 
 public:
-
     // Constructor 1 – fara parametri
     Restaurant() : id(++totalRestaurante) {
         nume = "Necunoscut";
@@ -67,18 +68,15 @@ public:
     // Operator de atribuire (deep copy)
     Restaurant& operator=(const Restaurant& other) {
         if (this != &other) {
-            // nu putem modifica id (este const)
             nume = other.nume;
             adresa = other.adresa;
             nrLocuri = other.nrLocuri;
 
-            // eliberam memoria existenta
             if (tipBucatarie != nullptr) {
                 delete[] tipBucatarie;
                 tipBucatarie = nullptr;
             }
 
-            // copiem din nou tipBucatarie
             if (other.tipBucatarie != nullptr) {
                 tipBucatarie = new char[strlen(other.tipBucatarie) + 1];
                 strcpy_s(tipBucatarie, strlen(other.tipBucatarie) + 1, other.tipBucatarie);
@@ -86,6 +84,7 @@ public:
         }
         return *this;
     }
+
     // Operator + pentru Restaurant
     Restaurant operator+(int extra) const {
         Restaurant copie(*this);
@@ -93,21 +92,21 @@ public:
         return copie;
     }
 
-    //Operator ==
+    // Operator ==
     bool operator==(const Restaurant& other) const {
         return this->nume == other.nume &&
             this->nrLocuri == other.nrLocuri;
     }
 
-    //Operator != pentru Restaurant
+    // Operator !=
     bool operator!=(const Restaurant& other) const {
         return !(*this == other);
     }
 
+    // operator()
     double operator()(int multiplicator) const {
         return this->nrLocuri * multiplicator;
     }
-
 
     // Destructor
     ~Restaurant() {
@@ -125,21 +124,15 @@ public:
 
     // ===== SETTERI =====
     void setNume(const string& n) {
-        if (!n.empty()) {
-            nume = n;
-        }
+        if (!n.empty()) nume = n;
     }
 
     void setAdresa(const string& a) {
-        if (!a.empty()) {
-            adresa = a;
-        }
+        if (!a.empty()) adresa = a;
     }
 
     void setNrLocuri(int nr) {
-        if (nr > 0) {
-            nrLocuri = nr;
-        }
+        if (nr > 0) nrLocuri = nr;
     }
 
     void setTipBucatarie(const char* tip) {
@@ -169,11 +162,10 @@ public:
         return (r1.nrLocuri + r2.nrLocuri + r3.nrLocuri) / 3.0;
     }
 
-    // functie globala friend
+    // friend-uri
     friend void comparaRestaurante(const Restaurant& r1, const Restaurant& r2);
-
     friend ostream& operator<<(ostream& out, const Restaurant& r);
-
+    friend istream& operator>>(istream& in, Restaurant& r);
 };
 
 int Restaurant::totalRestaurante = 0;
@@ -187,80 +179,58 @@ private:
     double salariu;
 
     static int totalAngajati;
-
     const int id;
 
     int* aniExperienta;
 
 public:
-    // Constructor 1
     Angajat() : id(++totalAngajati) {
         nume = "Anonim";
         functie = "Necunoscuta";
         salariu = 0;
-
         aniExperienta = new int(0);
     }
 
-    // Constructor 2
     Angajat(string n, string f) : id(++totalAngajati) {
         nume = n;
         functie = f;
         salariu = 3000;
-
         aniExperienta = new int(1);
     }
 
-    // Constructor 3
     Angajat(string n, string f, double s, int ani) : id(++totalAngajati) {
         nume = n;
         functie = f;
         salariu = s;
-
         aniExperienta = new int(ani);
     }
 
-    // Constructor de copiere (deep copy)
     Angajat(const Angajat& other) : id(++totalAngajati) {
         nume = other.nume;
         functie = other.functie;
         salariu = other.salariu;
-
-        if (other.aniExperienta != nullptr) {
-            aniExperienta = new int(*other.aniExperienta);
-        }
-        else {
-            aniExperienta = nullptr;
-        }
+        if (other.aniExperienta != nullptr) aniExperienta = new int(*other.aniExperienta);
+        else aniExperienta = nullptr;
     }
 
-    // Operator de atribuire (deep copy)
     Angajat& operator=(const Angajat& other) {
         if (this != &other) {
             nume = other.nume;
             functie = other.functie;
             salariu = other.salariu;
 
-            if (aniExperienta != nullptr) {
-                delete aniExperienta;
-            }
+            if (aniExperienta != nullptr) delete aniExperienta;
 
-            if (other.aniExperienta != nullptr) {
-                aniExperienta = new int(*other.aniExperienta);
-            }
-            else {
-                aniExperienta = nullptr;
-            }
+            if (other.aniExperienta != nullptr) aniExperienta = new int(*other.aniExperienta);
+            else aniExperienta = nullptr;
         }
         return *this;
     }
 
-    //Operator <
     bool operator<(const Angajat& other) const {
         return this->salariu < other.salariu;
     }
 
-    //Operator <= 
     bool operator<=(const Angajat& other) const {
         return this->salariu <= other.salariu;
     }
@@ -269,12 +239,17 @@ public:
         return this->salariu <= 0;
     }
 
-    // Destructor
+    Angajat operator+(double suma) const {
+        Angajat copie(*this);
+        copie.salariu += suma;
+        return copie;
+    }
+
     ~Angajat() {
         delete aniExperienta;
     }
 
-    // ===== GETTERI =====
+    // GETTERI
     string getNume() const { return nume; }
     string getFunctie() const { return functie; }
     double getSalariu() const { return salariu; }
@@ -282,19 +257,10 @@ public:
     int getId() const { return id; }
     static int getTotalAngajati() { return totalAngajati; }
 
-    // ===== SETTERI =====
-    void setNume(const string& n) {
-        if (!n.empty()) nume = n;
-    }
-
-    void setFunctie(const string& f) {
-        if (!f.empty()) functie = f;
-    }
-
-    void setSalariu(double s) {
-        if (s > 0) salariu = s;
-    }
-
+    // SETTERI
+    void setNume(const string& n) { if (!n.empty()) nume = n; }
+    void setFunctie(const string& f) { if (!f.empty()) functie = f; }
+    void setSalariu(double s) { if (s > 0) salariu = s; }
     void setAniExperienta(int ani) {
         if (ani >= 0) {
             if (aniExperienta) delete aniExperienta;
@@ -302,7 +268,6 @@ public:
         }
     }
 
-    // ===== AFISARE =====
     void afisare() const {
         cout << "Angajat ID: " << id << "\n";
         cout << "  Nume: " << nume << "\n";
@@ -312,26 +277,16 @@ public:
         cout << "-----------------------------\n";
     }
 
-    // crestem salaruiul unui angajat cu o suma fixa
-    Angajat operator+(double suma) const {
-        Angajat copie(*this);
-        copie.salariu += suma;
-        return copie;
-    }
-
-    // functie statica - salariu mediu al 3 angajati
     static double salariuMediu(const Angajat& a1,
         const Angajat& a2,
         const Angajat& a3) {
         return (a1.salariu + a2.salariu + a3.salariu) / 3.0;
     }
 
-    // functie globala friend
     friend double diferentaSalarii(const Angajat& a1, const Angajat& a2);
 };
 
 int Angajat::totalAngajati = 0;
-
 
 
 // ====== CLASA CLIENT ======
@@ -342,81 +297,59 @@ private:
     double buget;
 
     static int totalClienti;
-
     const int id;
 
     double* reducereFidelitate;
 
 public:
-    // Constructor 1
     Client() : id(++totalClienti) {
         nume = "Necunoscut";
         varsta = 0;
         buget = 0;
-
         reducereFidelitate = new double(0.0);
     }
 
-    // Constructor 2
     Client(string n, int v) : id(++totalClienti) {
         nume = n;
         varsta = v;
         buget = 100;
-
         reducereFidelitate = new double(5.0);
     }
 
-    // Constructor 3
     Client(string n, int v, double b, double reducere) : id(++totalClienti) {
         nume = n;
         varsta = v;
         buget = b;
-
         reducereFidelitate = new double(reducere);
     }
 
-    // Constructor de copiere (deep copy)
     Client(const Client& other) : id(++totalClienti) {
         nume = other.nume;
         varsta = other.varsta;
         buget = other.buget;
-
-        if (other.reducereFidelitate != nullptr) {
-            reducereFidelitate = new double(*other.reducereFidelitate);
-        }
-        else {
-            reducereFidelitate = nullptr;
-        }
+        if (other.reducereFidelitate != nullptr) reducereFidelitate = new double(*other.reducereFidelitate);
+        else reducereFidelitate = nullptr;
     }
 
-    // Operator de atribuire (deep copy)
     Client& operator=(const Client& other) {
         if (this != &other) {
             nume = other.nume;
             varsta = other.varsta;
             buget = other.buget;
 
-            if (reducereFidelitate != nullptr) {
-                delete reducereFidelitate;
-            }
+            if (reducereFidelitate != nullptr) delete reducereFidelitate;
 
-            if (other.reducereFidelitate != nullptr) {
-                reducereFidelitate = new double(*other.reducereFidelitate);
-            }
-            else {
-                reducereFidelitate = nullptr;
-            }
+            if (other.reducereFidelitate != nullptr) reducereFidelitate = new double(*other.reducereFidelitate);
+            else reducereFidelitate = nullptr;
         }
         return *this;
     }
 
-    //Operator ++ preincrementare
     Client& operator++() {
         this->varsta++;
         return *this;
     }
 
-    //Operator -- post decrementare
     Client operator--(int) {
         Client copie = *this;
         this->varsta--;
@@ -427,51 +360,37 @@ public:
         return this->buget > other.buget;
     }
 
-    // Destructor
+    char operator[](int index) const {
+        string reducereStr = to_string(this->getReducereFidelitate());
+        if (index >= 0 && index < (int)reducereStr.length()) {
+            return reducereStr[index];
+        }
+        throw out_of_range("Index invalid.");
+    }
+
     ~Client() {
         delete reducereFidelitate;
     }
 
-    // ===== GETTERI =====
+    // GETTERI
     string getNume() const { return nume; }
     int getVarsta() const { return varsta; }
     double getBuget() const { return buget; }
     double getReducereFidelitate() const { return reducereFidelitate ? *reducereFidelitate : 0; }
     int getId() const { return id; }
-
     static int getTotalClienti() { return totalClienti; }
 
-    // ===== SETTERI =====
-    void setNume(const string& n) {
-        if (!n.empty()) nume = n;
-    }
-
-    void setVarsta(int v) {
-        if (v > 0) varsta = v;
-    }
-
-    void setBuget(double b) {
-        if (b >= 0) buget = b;
-    }
-
+    // SETTERI
+    void setNume(const string& n) { if (!n.empty()) nume = n; }
+    void setVarsta(int v) { if (v > 0) varsta = v; }
+    void setBuget(double b) { if (b >= 0) buget = b; }
     void setReducereFidelitate(double reducere) {
         if (reducere >= 0) {
-            if (reducereFidelitate != nullptr)
-                delete reducereFidelitate;
+            if (reducereFidelitate != nullptr) delete reducereFidelitate;
             reducereFidelitate = new double(reducere);
         }
     }
 
-    char operator[](int index) const {
-        string reducereStr = to_string(this->getReducereFidelitate());
-        if (index >= 0 && index < reducereStr.length()) {
-            return reducereStr[index];
-        }
-        throw std::out_of_range("Index invalid.");
-    }
-
-
-    // ===== AFISARE =====
     void afisare() const {
         cout << "Client ID: " << id << "\n";
         cout << "  Nume: " << nume << "\n";
@@ -481,7 +400,6 @@ public:
         cout << "-----------------------------\n";
     }
 
-    // functie statica - buget total al 3 clienti
     static double bugetTotal(const Client& c1,
         const Client& c2,
         const Client& c3) {
@@ -492,7 +410,7 @@ public:
 int Client::totalClienti = 0;
 
 
-// ====== FUNCTIE GLOBALA FRIEND – RESTAURANT ======
+// ====== FUNCTII FRIEND ======
 void comparaRestaurante(const Restaurant& r1, const Restaurant& r2) {
     cout << "\n=== Compara restaurante ===\n";
     cout << "Restaurant " << r1.getNume() << " are " << r1.getNrLocuri() << " locuri.\n";
@@ -506,16 +424,13 @@ void comparaRestaurante(const Restaurant& r1, const Restaurant& r2) {
         cout << "Cele doua restaurante au acelasi numar de locuri.\n";
 }
 
-
-// ====== FUNCTIE GLOBALA FRIEND – ANGAJAT ======
 double diferentaSalarii(const Angajat& a1, const Angajat& a2) {
     cout << "\n=== Comparare salarii ===\n";
     cout << "Salariu " << a1.getNume() << ": " << a1.getSalariu() << "\n";
     cout << "Salariu " << a2.getNume() << ": " << a2.getSalariu() << "\n";
-    return a1.salariu - a2.salariu; // acces direct la atribut privat datorita friend
+    return a1.salariu - a2.salariu;
 }
 
-//functie freind pentru restaurant
 ostream& operator<<(ostream& out, const Restaurant& r) {
     out << "Restaurant ID: " << r.id << "\n";
     out << "Nume: " << r.nume << "\n";
@@ -525,13 +440,32 @@ ostream& operator<<(ostream& out, const Restaurant& r) {
     return out;
 }
 
+// ====== NOU (FAZA 4) - operator>> pentru Restaurant ======
+istream& operator>>(istream& in, Restaurant& r) {
+    cout << "Nume: ";
+    getline(in >> ws, r.nume);
+
+    cout << "Adresa: ";
+    getline(in, r.adresa);
+
+    cout << "Nr locuri: ";
+    in >> r.nrLocuri;
+
+    cout << "Tip bucatarie: ";
+    char buffer[200];
+    in >> ws;
+    in.getline(buffer, 200);
+
+    r.setTipBucatarie(buffer);
+    return in;
+}
 
 
 int main() {
     // --- Restaurante ---
-    Restaurant r1;  // constructor fara parametri
-    Restaurant r2("RAC Bistro");  // constructor cu un parametru
-    Restaurant r3("La Remus", "Bucuresti, Str. Exemplu 10", 80, "mediteraneana"); // toti parametrii
+    Restaurant r1;
+    Restaurant r2("RAC Bistro");
+    Restaurant r3("La Remus", "Bucuresti, Str. Exemplu 10", 80, "mediteraneana");
 
     cout << "=== Restaurante ===\n";
     r1.afisare();
@@ -543,17 +477,15 @@ int main() {
     cout << "Total restaurante create (inainte de copie): "
         << Restaurant::getTotalRestaurante() << "\n\n";
 
-    // testam copy constructor pentru Restaurant
     Restaurant rCopy = r3;
     cout << "Restaurant copiat (rCopy din r3):\n";
     rCopy.afisare();
     cout << "Nume restaurant copiat (getter): " << rCopy.getNume() << "\n\n";
 
-
     // --- Angajati ---
-    Angajat a1;  // fara parametri
-    Angajat a2("Andrei", "Ospatar"); // 2 parametri
-    Angajat a3("Maria", "Manager", 6500, 5); // mai multi parametri
+    Angajat a1;
+    Angajat a2("Andrei", "Ospatar");
+    Angajat a3("Maria", "Manager", 6500, 5);
 
     cout << "=== Angajati ===\n";
     a1.afisare();
@@ -565,13 +497,11 @@ int main() {
     cout << "Total angajati creati (inainte de copie): "
         << Angajat::getTotalAngajati() << "\n\n";
 
-    // testam copy constructor pentru Angajat
     Angajat aCopy = a3;
     cout << "Angajat copiat (aCopy din a3):\n";
     aCopy.afisare();
     cout << "Salariul angajatului copiat (getter): "
         << aCopy.getSalariu() << "\n\n";
-
 
     // --- Clienti ---
     Client c1;
@@ -588,26 +518,20 @@ int main() {
     cout << "Total clienti creati (inainte de copie): "
         << Client::getTotalClienti() << "\n\n";
 
-    // testam copy constructor pentru Client
     Client cCopy = c3;
     cout << "Client copiat (cCopy din c3):\n";
     cCopy.afisare();
     cout << "Bugetul clientului copiat (getter): "
         << cCopy.getBuget() << "\n\n";
 
-
-    // --- Functii friend (Faza 2) ---
     cout << "=== Functii friend ===\n";
     comparaRestaurante(r1, r3);
 
     double dif = diferentaSalarii(a3, a2);
     cout << "Diferenta de salarii intre a3 si a2 este: " << dif << "\n\n";
 
-
-    // --- Operatorii (Faza 3) ---
     cout << "=== Testare operatori Faza 3 ===\n";
 
-    // Restaurant: operator+, ==, !=, (), <<
     Restaurant rTest = r1 + 20;
     cout << "\nRestaurant dupa operator+ (r1 + 20):\n";
     rTest.afisare();
@@ -619,14 +543,11 @@ int main() {
     cout << "\nAfisare Restaurant cu operator<< (r3):\n";
     cout << r3 << "\n";
 
-    // Restaurant: operator= (daca vrei test explicit)
     Restaurant rAssign;
     rAssign = r3;
     cout << "\nRestaurant dupa operator= (rAssign = r3):\n";
     rAssign.afisare();
 
-
-    // Angajat: operator+, <, <=, !, =
     Angajat aTest = a3 + 500;
     cout << "\nAngajat dupa operator+ (a3 + 500):\n";
     aTest.afisare();
@@ -640,8 +561,6 @@ int main() {
     cout << "\nAngajat dupa operator= (aAssign = a3):\n";
     aAssign.afisare();
 
-
-    // Client: ++, --(post), >, [], =
     ++c1;
     cout << "\nClient dupa operator++ (++c1):\n";
     c1.afisare();
@@ -664,10 +583,28 @@ int main() {
     cout << "\nClient dupa operator= (cAssign = c3):\n";
     cAssign.afisare();
 
+    // ====== FAZA 4 (partial) - Vector Restaurante ======
+    cout << "\n=== FAZA 4 (partial) - Vector Restaurante ===\n";
 
-    cout << "\n=== Final testare Faza 2 + Faza 3 ===\n";
+    int n;
+    cout << "Cate restaurante citim? ";
+    cin >> n;
+
+    vector<Restaurant> vRestaurante;
+    vRestaurante.reserve(n);
+
+    for (int i = 0; i < n; i++) {
+        cout << "\n--- Restaurant " << (i + 1) << " ---\n";
+        Restaurant temp;
+        cin >> temp;
+        vRestaurante.push_back(temp);
+    }
+
+    cout << "\n=== Afisare vector Restaurante ===\n";
+    for (int i = 0; i < (int)vRestaurante.size(); i++) {
+        vRestaurante[i].afisare();
+    }
+
+    cout << "\n=== Final testare Faza 2 + Faza 3 + (partial) Faza 4 ===\n";
     return 0;
 }
-
-
-
