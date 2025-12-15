@@ -605,6 +605,103 @@ int main() {
         vRestaurante[i].afisare();
     }
 
-    cout << "\n=== Final testare Faza 2 + Faza 3 + (partial) Faza 4 ===\n";
+    // ====== FAZA 4 - Vector Angajati ======
+    cout << "\n=== FAZA 4 - Vector Angajati ===\n";
+
+    int m;
+    cout << "Cati angajati citim? ";
+    cin >> m;
+
+    vector<Angajat> vAngajati;
+    vAngajati.reserve(m);
+
+    for (int i = 0; i < m; i++) {
+        string nume, functie;
+        double salariu;
+
+        cout << "\nAngajat " << i + 1 << ":\n";
+        cout << "Nume: ";
+        cin >> ws;
+        getline(cin, nume);
+
+        cout << "Functie: ";
+        getline(cin, functie);
+
+        cout << "Salariu: ";
+        cin >> salariu;
+
+        Angajat a(nume, functie, salariu, 0);
+        vAngajati.push_back(a);
+    }
+
+    cout << "\n=== Afisare vector Angajati ===\n";
+    for (const Angajat& a : vAngajati) {
+        a.afisare();
+    }
+
+    // ====== FAZA 4 - Vector Clienti ======
+    cout << "\n=== FAZA 4 - Vector Clienti ===\n";
+
+    int k;
+    cout << "Cati clienti citim? ";
+    cin >> k;
+
+    vector<Client> vClienti;
+    vClienti.reserve(k);
+
+    for (int i = 0; i < k; i++) {
+        string nume;
+        int varsta;
+        double buget, reducere;
+
+        cout << "\nClient " << i + 1 << ":\n";
+        cout << "Nume: ";
+        cin >> ws;
+        getline(cin, nume);
+
+        cout << "Varsta: ";
+        cin >> varsta;
+
+        cout << "Buget: ";
+        cin >> buget;
+
+        cout << "Reducere fidelitate: ";
+        cin >> reducere;
+
+        Client c(nume, varsta, buget, reducere);
+        vClienti.push_back(c);
+    }
+
+    cout << "\n=== Afisare vector Clienti ===\n";
+    for (const Client& c : vClienti) {
+        c.afisare();
+    }
+
+
+    // ====== FAZA 4 - Matrice Restaurante ======
+    cout << "\n=== FAZA 4 - Matrice Restaurante ===\n";
+
+    int linii, coloane;
+    cout << "Nr linii: ";
+    cin >> linii;
+    cout << "Nr coloane: ";
+    cin >> coloane;
+
+    vector<vector<Restaurant>> matrice(linii, vector<Restaurant>(coloane));
+
+    for (int i = 0; i < linii; i++) {
+        for (int j = 0; j < coloane; j++) {
+            cout << "\nRestaurant [" << i << "][" << j << "]\n";
+            cin >> matrice[i][j];
+        }
+    }
+
+    cout << "\n=== Afisare matrice Restaurante ===\n";
+    for (int i = 0; i < linii; i++) {
+        for (int j = 0; j < coloane; j++) {
+            matrice[i][j].afisare();
+        }
+    }
+    cout << "\n=== Final testare Faza 4 ===\n";
     return 0;
 }
